@@ -1,0 +1,5 @@
+python-dotenv==1.0.0
+openai==0.27.8
+ipython==8.14.0
+Flask==2.3.3
+virtualenv==20.24.3
