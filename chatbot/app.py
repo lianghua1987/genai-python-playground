@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 import argparse
 import enum
 
-config = dotenv_values(".env")
+config = dotenv_values("../.env")
 openai.api_key = config["OPENAI_API_KEY"]
 
 parser = argparse.ArgumentParser(description="Simple command line chatbot with GPT-3.5-turbo")
