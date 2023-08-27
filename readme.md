@@ -6,7 +6,18 @@ To run application - http://localhost:5001/
 
 ![preview.png](static%2Fcolor_palette_generator%2Fpreview.png)
 
-### GPT-3.5-turbo Chatbot
+### GPT-3.5-turbo Chatbot(CL)
 To run application - `python .\chatbot\app.py --personality "rude and obnoxious"`
 
 ![preview.png](static%2Fchatbot%2Fpreview.png)
+
+### GPT-3.5-turbo Code Reviewer(CL)
+To run application - `python .\app.py .\sample\dfs.py`
+![preview.png](static%2Fcode-reviewer%2Fpreview.png)
+### Spotify Playlist Generator
+```shell
+python -m venv .venv
+.\.venv\Scripts\activate.bat
+python .\app.py "Gangsta rap song from West coast" --count 8 --name  "G-Rap"
+```
+![preview.png](static%2Fspotify-playlist-generator%2Fpreview.png)

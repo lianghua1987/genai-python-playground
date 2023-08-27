@@ -1,2 +1,5 @@
 .env
 .idea
+.cache
+.venv
+env
