@@ -22,6 +22,7 @@ python .\app.py "Gangsta rap song from West coast" --count 8 --name  "G-Rap"
 ```
 ![preview.png](static%2Fspotify-playlist-generator%2Fpreview.png)
 ### Embeddings w/ Nomic Atlas
+Application to get embedding of 5000 movies, upload to Nomic Atlas and do recommendations. (`movie_embeddings_cache.pkl` differs from Mac to PC)
 ```shell
 pip install nomic
 nomic login [token]
@@ -29,3 +30,4 @@ nomic login [token]
 To run application - `python .\app.py`
 ![preview-console.png](static%2Fembeddings%2Fpreview-console.png)
 ![preview-upload-atlas.png](static%2Fembeddings%2Fpreview-upload-atlas.png)
+![preview-nomic.png](static%2Fembeddings%2Fpreview-nomic.png)

@@ -7,6 +7,7 @@ from dotenv import dotenv_values
 import tiktoken
 import time
 from nomic import atlas
+from openai.embeddings_utils import distances_from_embeddings, indices_of_nearest_neighbors_from_distances
 
 from utils import Bgcolors as colors
 
@@ -60,6 +61,30 @@ def map_embeddings(plot_embeddings, data):
     )
 
 
+def get_recommendations(plots, index_of_sources_string, embedding_cache, k_nearest_neighbors=5, model=default_model):
+    # Get all of the embeddings
+    embeddings = [embedding_from_string(plot, default_model, embedding_cache) for plot in plots]
+
+    # Get embedding for specific query string
+    query_embedding = embeddings[index_of_sources_string]
+
+    # Get distance between our embedding and all other embedding
+    distance = distances_from_embeddings(query_embedding, embeddings)
+
+    # Get indices of the nearest neighbors
+    indices_of_nearest_neighbors = indices_of_nearest_neighbors_from_distances(distance)
+    plot = plots[index_of_sources_string]
+    count = 0
+    for i in indices_of_nearest_neighbors:
+        if plot == plots[i]:
+            continue
+        if count >= k_nearest_neighbors:
+            break
+        count += 1
+        print(f"Found {count} closet match with distances of {colors.OKBLUE}{distance[i]}{colors.ENDC}")
+
+
+
 def main():
     data_sample_path = "movie_plots.csv"
     df = pd.read_csv(data_sample_path)
@@ -87,6 +112,8 @@ def main():
     plot_embeddings = [embedding_from_string(plot, default_model, embedding_cache) for plot in plots]
     data = movies[["Title", "Genre"]].to_dict("records")
     map_embeddings(plot_embeddings, data)
+
+    get_recommendations(plots, 0, embedding_cache, 10)
 
 
 if __name__ == '__main__':
