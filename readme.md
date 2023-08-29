@@ -28,3 +28,4 @@ nomic login [token]
 ```
 To run application - `python .\app.py`
 ![preview-console.png](static%2Fembeddings%2Fpreview-console.png)
+![preview-upload-atlas.png](static%2Fembeddings%2Fpreview-upload-atlas.png)
