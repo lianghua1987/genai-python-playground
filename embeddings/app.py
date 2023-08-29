@@ -1,9 +1,11 @@
+import numpy as np
 import openai
 import pandas as pd
 import pickle
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 from dotenv import dotenv_values
 import tiktoken
+from nomic import atlas
 
 from utils import Bgcolors as colors
 
@@ -11,7 +13,7 @@ default_model = "text-embedding-ada-002"
 embedding_cache_path = "movie_embeddings_cache.pkl"
 
 
-@retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
+@retry(wait=wait_random_exponential(min=5, max=20), stop=stop_after_attempt(6))
 def get_embedding(text: str, model=default_model):
     response = openai.Embedding.create(
         input="candy canes",
@@ -49,6 +51,12 @@ def cal_cost(num_of_tokens: int) -> float:
     return .0004 / 1000 * num_of_tokens
 
 
+def map_embeddings(plot_embeddings, data):
+    atlas.map_embeddings(
+        embeddings=np.array(plot_embeddings),
+        data=data
+    )
+
 
 def main():
     data_sample_path = "movie_plots.csv"
@@ -66,7 +74,8 @@ def main():
     with open(embedding_cache_path, "wb") as embedding_cache_file:
         pickle.dump(embedding_cache, embedding_cache_file)
 
-    movies = df[df["Origin/Ethnicity"] == "American"].sort_values("Release Year", ascending=False).head(2000)
+    movies = df[df["Origin/Ethnicity"] == "American"].sort_values("Release Year", ascending=False).head(60)
+    print(movies)
     plots = movies["Plot"].values
     tokens = check_tokens(plots)
     estimated_cost = cal_cost(tokens)
@@ -74,6 +83,10 @@ def main():
         f"Estimated cost: {colors.BOLD}${float('{:.2f}'.format(estimated_cost))}{colors.ENDC} with total {tokens} tokens.")
 
     plot_embeddings = [embedding_from_string(plot, default_model, embedding_cache) for plot in plots]
+
+    data = movies[["Title", "Genre"]].to_dict("records")
+    print(data)
+    map_embeddings(plot_embeddings, data)
 
 
 if __name__ == '__main__':
