@@ -21,3 +21,10 @@ python -m venv .venv
 python .\app.py "Gangsta rap song from West coast" --count 8 --name  "G-Rap"
 ```
 ![preview.png](static%2Fspotify-playlist-generator%2Fpreview.png)
+### Embeddings w/ Nomic Atlas
+```shell
+pip install nomic
+nomic login [token]
+```
+To run application - `python .\app.py`
+![preview-console.png](static%2Fembeddings%2Fpreview-console.png)
