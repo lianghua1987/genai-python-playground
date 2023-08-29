@@ -1,21 +1,8 @@
-import openai
-from dotenv import dotenv_values
 import argparse
 import enum
 
-config = dotenv_values("../.env")
-openai.api_key = config["OPENAI_API_KEY"]
-
-parser = argparse.ArgumentParser(description="Simple command line chatbot with GPT-3.5-turbo")
-parser.add_argument("--personality", type=str, help="A brief summary of chatbot personality",
-                    default="friendly and helpful chatbot")
-
-args = parser.parse_args()
-personality = args.personality
-print(f"Personality set to: {personality}")
-
-messages = [{"role": "system", "content": f"""You are a conversational chatbot. Your personality is {personality}"""}]
-
+import openai
+from dotenv import dotenv_values
 
 class Style(enum.Enum):
     bold = "\033[1m"
@@ -51,4 +38,17 @@ def main():
 
 
 if __name__ == '__main__':
+    config = dotenv_values("../.env")
+    openai.api_key = config["OPENAI_API_KEY"]
+
+    parser = argparse.ArgumentParser(description="Simple command line chatbot with GPT-3.5-turbo")
+    parser.add_argument("--personality", type=str, help="A brief summary of chatbot personality",
+                        default="friendly and helpful chatbot")
+
+    args = parser.parse_args()
+    personality = args.personality
+    print(f"Personality set to: {personality}")
+
+    messages = [
+        {"role": "system", "content": f"""You are a conversational chatbot. Your personality is {personality}"""}]
     main()
