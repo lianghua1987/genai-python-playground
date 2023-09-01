@@ -32,3 +32,13 @@ To run application - `python .\app.py`
 ![preview-upload-atlas.png](static%2Fembeddings%2Fpreview-upload-atlas.png)
 ![preview-distance.png](static%2Fembeddings%2Fpreview-distance.png)
 ![preview-nomic.png](static%2Fembeddings%2Fpreview-nomic.png)
+
+### Reddit Sentiment Analyzer 
+List 5 different cities in the States that I've lived. Go to reddit api(praw) to grab monthly submission's comment and score them into .csv file.  
+To run application - `python .\app.py`
+
+#### Troubleshoot
+[Fetch reddit client id and secret](https://reddit.com/prefs/apps)  
+[Tiktoken 4 ChatCompletion](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb)  
+[How to add ipython console to pycharm](https://www.youtube.com/watch?v=6JpLmAWa6lA)
+![preview.png](static%2Fsentiment-analysis%2Fpreview.png)
