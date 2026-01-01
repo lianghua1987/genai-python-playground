@@ -1,10 +1,5 @@
 python-dotenv==1.0.0
-openai==0.27.8
-ipython==8.14.0
-Flask==2.3.3
-virtualenv==20.24.3
-tiktoken==0.4.0
-spotipy==2.23.0
-nomic==2.0.7
-numpy==1.25.2
-tenacity==8.2.3
+sentence_transformers==5.2.0
+chromadb==1.4.0
+google-genai==1.56.0
+tensorflow<2.20

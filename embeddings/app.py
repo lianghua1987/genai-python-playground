@@ -62,7 +62,7 @@ def map_embeddings(plot_embeddings, data):
 
 
 def get_recommendations(plots, index_of_sources_string, embedding_cache, k_nearest_neighbors=5, model=default_model):
-    # Get all of the embeddings
+    # Get all the embeddings
     embeddings = [embedding_from_string(plot, default_model, embedding_cache) for plot in plots]
 
     # Get embedding for specific query string
@@ -82,7 +82,6 @@ def get_recommendations(plots, index_of_sources_string, embedding_cache, k_neare
             break
         count += 1
         print(f"Found {count} closet match with distances of {colors.OKBLUE}{distance[i]}{colors.ENDC}")
-
 
 
 def main():
