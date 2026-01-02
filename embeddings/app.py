@@ -12,6 +12,7 @@ from openai.embeddings_utils import distances_from_embeddings, indices_of_neares
 from utils import Bgcolors as colors
 
 default_model = "text-embedding-ada-002"
+embedding_cache_mac_path = "movie_embeddings_cache_mac.pkl"
 embedding_cache_path = "movie_embeddings_cache.pkl"
 
 
@@ -61,7 +62,8 @@ def map_embeddings(plot_embeddings, data):
     )
 
 
-def get_recommendations(plots, index_of_sources_string, embedding_cache, k_nearest_neighbors=5, model=default_model):
+def get_recommendations(plots, index_of_sources_string, data, embedding_cache, k_nearest_neighbors=5, model=default_model):
+
     # Get all the embeddings
     embeddings = [embedding_from_string(plot, default_model, embedding_cache) for plot in plots]
 
@@ -70,9 +72,10 @@ def get_recommendations(plots, index_of_sources_string, embedding_cache, k_neare
 
     # Get distance between our embedding and all other embedding
     distance = distances_from_embeddings(query_embedding, embeddings)
-
+    print(f"{colors.OKBLUE}Distances: {distance}{colors.ENDC}")
     # Get indices of the nearest neighbors
     indices_of_nearest_neighbors = indices_of_nearest_neighbors_from_distances(distance)
+    print(f"{colors.OKBLUE}Indices of nearst neighbors: {indices_of_nearest_neighbors}{colors.ENDC}")
     plot = plots[index_of_sources_string]
     count = 0
     for i in indices_of_nearest_neighbors:
@@ -81,16 +84,17 @@ def get_recommendations(plots, index_of_sources_string, embedding_cache, k_neare
         if count >= k_nearest_neighbors:
             break
         count += 1
-        print(f"Found {count} closet match with distances of {colors.OKBLUE}{distance[i]}{colors.ENDC}")
+        print(f"{colors.OKCYAN}Distance: {distance[i]}, title: {data[i]['Title']}, genre: {data[i]['Genre']}{colors.ENDC}")
 
 
 def main():
     data_sample_path = "movie_plots.csv"
     df = pd.read_csv(data_sample_path)
-
+    cache_exists = False
     # Load cache if exists, and save a copy to disk
     try:
         embedding_cache = pd.read_pickle(embedding_cache_path)
+        cache_exists = True
     except FileNotFoundError:
         print(f"{colors.WARNING}WARNING: {colors.ENDC}File does not found, new one created")
         embedding_cache = {}
@@ -110,9 +114,11 @@ def main():
 
     plot_embeddings = [embedding_from_string(plot, default_model, embedding_cache) for plot in plots]
     data = movies[["Title", "Genre"]].to_dict("records")
-    map_embeddings(plot_embeddings, data)
 
-    get_recommendations(plots, 0, embedding_cache, 10)
+    if not cache_exists:
+        map_embeddings(plot_embeddings, data)
+
+    get_recommendations(plots, 0, data, embedding_cache,  3)
 
 
 if __name__ == '__main__':
